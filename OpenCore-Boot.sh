@@ -18,7 +18,7 @@ MY_OPTIONS="+pcid,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
 # This script works for Big Sur, Catalina, Mojave, and High Sierra. Tested with
 # macOS 10.15.6, macOS 10.14.6, and macOS 10.13.6
 
-ALLOCATED_RAM="3072" # MiB
+ALLOCATED_RAM="8192" # MiB
 CPU_SOCKETS="1"
 CPU_CORES="2"
 CPU_THREADS="4"
@@ -43,7 +43,7 @@ args=(
   -drive if=pflash,format=raw,readonly,file="$REPO_PATH/$OVMF_DIR/OVMF_CODE.fd"
   -drive if=pflash,format=raw,file="$REPO_PATH/$OVMF_DIR/OVMF_VARS-1024x768.fd"
   -smbios type=2
-  -device ich9-intel-hda -device hda-duplex
+  #-device ich9-intel-hda -device hda-duplex
   -device ich9-ahci,id=sata
   # -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore-Catalina/OpenCore-nopicker.qcow2"
   -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore-Catalina/OpenCore.qcow2"
@@ -55,7 +55,10 @@ args=(
   # -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27
   -netdev user,id=net0 -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27
   -monitor stdio
-  -vga vmware
+  #-vga vmware
+  #-vga none -device qxl-vga,vgamem_mb=32
+  #-vga qxl
+  -vga std
 )
 
 qemu-system-x86_64 "${args[@]}"
